@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inventory / Product Management System</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <header class="page-header">
+      <h1>Inventory / Product Management System</h1>
+      <span class="db-badge">MySQL</span>
+    </header>
+
+    <div id="status-banner" class="status-banner"></div>
+
+    <div class="dashboard-grid">
+      <section class="summary-grid">
+        <article class="summary-card">
+          <div class="summary-label">Total Products</div>
+          <p id="sum-products" class="summary-value">0</p>
+        </article>
+
+        <article class="summary-card">
+          <div class="summary-label">Total Stock Units</div>
+          <p id="sum-stock" class="summary-value">0</p>
+        </article>
+
+        <article class="summary-card">
+          <div class="summary-label">Average Unit Price</div>
+          <p id="avg-price" class="summary-value">৳0.00</p>
+        </article>
+
+        <article class="summary-card">
+          <div class="summary-label">Total Stock Valuation</div>
+          <p id="sum-valuation" class="summary-value">৳0.00</p>
+        </article>
+      </section>
+
+      <main class="workspace">
+        <div class="sidebar-stack">
+          <section class="panel">
+            <form id="add-product-form" novalidate>
+              <h2 class="panel-title form-heading">Add New Product</h2>
+
+              <div class="form-group">
+                <label for="add-name">Product Name *</label>
+                <span class="hint">Enter product name (max 100 chars)</span>
+                <input
+                  type="text"
+                  id="add-name"
+                  name="product_name"
+                  required
+                  maxlength="100"
+                  placeholder="e.g., Digital Milk Analyzer"
+                >
+                <div class="error-msg">Please enter a product name.</div>
+              </div>
+
+              <div class="form-group">
+                <label id="add-category-label" for="add-category">Category *</label>
+                <select id="add-category" name="category" required>
+                  <option value="" disabled selected>Select category...</option>
+                </select>
+                <div id="add-category-error" class="error-msg">Please choose a category.</div>
+              </div>
+
+              <div class="form-group">
+                <label for="add-stock">Stock Quantity *</label>
+                <span class="hint">Available units in stock</span>
+                <input
+                  type="number"
+                  id="add-stock"
+                  name="stock_quantity"
+                  required
+                  min="0"
+                  step="1"
+                  placeholder="e.g., 25"
+                >
+                <div class="error-msg">Enter a valid stock quantity.</div>
+              </div>
+
+              <div class="form-group">
+                <label for="add-price">Unit Price (BDT ৳) *</label>
+                <span class="hint">Price per unit in Taka</span>
+                <input
+                  type="number"
+                  id="add-price"
+                  name="unit_price"
+                  required
+                  min="0"
+                  max="99999999.99"
+                  step="0.01"
+                  placeholder="e.g., 1450.00"
+                >
+                <div class="error-msg">Enter a valid price in BDT.</div>
+              </div>
+
+              <div class="form-group">
+                <label for="add-manager">Managed By *</label>
+                <span class="hint">Store manager name</span>
+                <input
+                  type="text"
+                  id="add-manager"
+                  name="managed_by"
+                  required
+                  maxlength="60"
+                  placeholder="e.g., Rejowan Ferdous Khan"
+                >
+                <div class="error-msg">Please enter the manager's name.</div>
+              </div>
+
+              <button type="submit" id="add-submit-btn" class="btn-primary">Save Product Record</button>
+            </form>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <h2 class="panel-title">Manage Categories</h2>
+              <span id="cat-count-badge" class="count-pill">0</span>
+            </div>
+
+            <form id="add-category-form" novalidate>
+              <label for="new-category-name">Category Name *</label>
+              <span class="hint">Add or remove product categories</span>
+              <div class="cat-input-group">
+                <input
+                  type="text"
+                  id="new-category-name"
+                  name="category_name"
+                  required
+                  maxlength="50"
+                  placeholder="e.g., Poultry Care"
+                  autocomplete="off"
+                >
+                <button type="submit" id="add-cat-btn" class="btn-primary">Add</button>
+              </div>
+              <div id="new-cat-error" class="error-msg">Please enter a category name.</div>
+            </form>
+
+            <ul id="category-list" class="category-list"></ul>
+          </section>
+        </div>
+
+        <section class="panel records-panel">
+          <form id="filter-form" class="filter-bar">
+            <div class="form-group">
+              <label for="search-input">Search Inventory</label>
+              <input
+                type="search"
+                id="search-input"
+                name="search"
+                placeholder="Search product..."
+                autocomplete="off"
+              >
+            </div>
+
+            <div class="form-group">
+              <label id="category-filter-label" for="category-filter">Filter Category</label>
+              <select id="category-filter" name="category">
+                <option value="">All Categories</option>
+              </select>
+            </div>
+
+            <button type="reset" id="reset-filter-btn" class="btn-secondary">Clear</button>
+          </form>
+
+          <div tabindex="0" role="region" aria-labelledby="inventory-table-caption" class="table-wrapper">
+            <table>
+              <caption id="inventory-table-caption">Saved Inventory Records</caption>
+              <thead>
+                <tr>
+                  <th class="col-id">ID</th>
+                  <th class="col-name">Product Name</th>
+                  <th class="col-center">Category</th>
+                  <th class="col-center">Stock Qty</th>
+                  <th class="col-center">Unit Price (৳)</th>
+                  <th class="col-center">Managed By</th>
+                  <th class="col-center">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="inventory-tbody">
+                <tr>
+                  <td colspan="7" class="empty-state">Loading inventory records...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <dialog id="edit-dialog">
+    <h2 id="edit-dialog-title">Update Product Record</h2>
+    <form id="edit-product-form" novalidate>
+      <input type="hidden" id="edit-id" name="product_id">
+
+      <div class="form-group">
+        <label for="edit-name">Product Name *</label>
+        <input type="text" id="edit-name" name="product_name" required maxlength="100">
+        <div class="error-msg">Please enter a product name.</div>
+      </div>
+
+      <div class="form-group">
+        <label id="edit-category-label" for="edit-category">Category *</label>
+        <select id="edit-category" name="category" required></select>
+        <div id="edit-category-error" class="error-msg">Please choose a category.</div>
+      </div>
+
+      <div class="form-group">
+        <label for="edit-stock">Stock Quantity *</label>
+        <input type="number" id="edit-stock" name="stock_quantity" required min="0" step="1">
+        <div class="error-msg">Enter a valid stock quantity.</div>
+      </div>
+
+      <div class="form-group">
+        <label for="edit-price">Unit Price (BDT ৳) *</label>
+        <input type="number" id="edit-price" name="unit_price" required min="0" max="99999999.99" step="0.01">
+        <div class="error-msg">Enter a valid price in BDT.</div>
+      </div>
+
+      <div class="form-group">
+        <label for="edit-manager">Managed By *</label>
+        <input type="text" id="edit-manager" name="managed_by" required maxlength="60">
+        <div class="error-msg">Please enter the manager's name.</div>
+      </div>
+
+      <div class="dialog-actions">
+        <button type="button" id="edit-cancel-btn" class="btn-secondary">Cancel</button>
+        <button type="submit" id="edit-submit-btn" class="btn-primary">Update Changes</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="delete-dialog">
+    <h2 id="delete-dialog-title">Delete Inventory Record?</h2>
+    <p id="delete-dialog-message">Are you sure you want to permanently remove this product?</p>
+    <form method="dialog" class="dialog-actions">
+      <button id="delete-cancel-btn" value="cancel" class="btn-secondary">Cancel</button>
+      <button id="delete-confirm-btn" value="delete" class="btn-danger">Delete Permanently</button>
+    </form>
+  </dialog>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
