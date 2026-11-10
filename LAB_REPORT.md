@@ -49,7 +49,9 @@ The objective of this project is to develop a small, single-page web application
 
 ---
 
-## 2. Tools Used
+## 2. Tools Used & Project File Structure
+
+### 2.1 Technology Stack
 
 | Component | Technology | Description |
 | :--- | :--- | :--- |
@@ -57,6 +59,23 @@ The objective of this project is to develop a small, single-page web application
 | **Backend** | Node.js, Express (`server.js`) | REST API server handling HTTP requests and executing SQL queries. |
 | **Database Driver** | `mysql2` | Connects Node.js with the MySQL database using parameterized queries. |
 | **Database** | MySQL (`inventory_db`) | Relational database storing the `categories` and `products` tables. |
+
+### 2.2 Project File Structure
+
+```text
+Inventory-Product-Management-System/
+├── database.sql
+├── server.js
+├── package.json
+├── LAB_REPORT.md
+├── public/
+│   ├── index.html
+│   ├── style.css
+│   └── script.js
+└── screenshots/
+    ├── dashboard-overview.png
+    └── edit-record-modal.png
+```
 
 ---
 
