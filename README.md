@@ -13,6 +13,8 @@
 
 ## **Project Title: Inventory / Product Management System**
 
+**GitHub Repository:** https://github.com/RUMON07/Inventory-Product-Management-System
+
 <br>
 
 ---
@@ -60,7 +62,10 @@ The objective of this project is to develop a small, single-page web application
 | **Database Driver** | `mysql2` | Connects Node.js with the MySQL database using parameterized queries. |
 | **Database** | MySQL (`inventory_db`) | Relational database storing the `categories` and `products` tables. |
 
-### 2.2 Project File Structure
+### 2.2 GitHub Repository & Project File Structure
+
+- **GitHub Repository Link:** https://github.com/RUMON07/Inventory-Product-Management-System
+- **Online Lab Report (`LAB_REPORT.md`):** https://github.com/RUMON07/Inventory-Product-Management-System/blob/main/LAB_REPORT.md
 
 ```text
 Inventory-Product-Management-System/
@@ -239,13 +244,14 @@ FROM products;
 
 ## 6. How to Run the Project
 
-1. **Database Setup:** Start the local MySQL server (e.g., via XAMPP or MySQL Server on `localhost:3306` with user `root`). Import `database.sql` in phpMyAdmin or MySQL CLI (`mysql -u root < database.sql`), or simply start the server and it will run `database.sql` automatically on first launch.
-2. **Install Packages and Start Server:** Open a terminal in the project folder and run:
+1. **GitHub Repository:** https://github.com/RUMON07/Inventory-Product-Management-System
+2. **Database Setup:** Start the local MySQL server (e.g., via XAMPP or MySQL Server on `localhost:3306` with user `root`). Import `database.sql` in phpMyAdmin or MySQL CLI (`mysql -u root < database.sql`), or simply start the server and it will run `database.sql` automatically on first launch.
+3. **Install Packages and Start Server:** Open a terminal in the project folder and run:
    ```bash
    npm install
    npm start
    ```
-3. **Open in Browser:** Go to `http://localhost:3000` in any web browser.
+4. **Open in Browser:** Go to `http://localhost:3000` in any web browser.
 
 ---
 
